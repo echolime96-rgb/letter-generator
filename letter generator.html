@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Term 1 CSA Writing Preparation: Letter Generator</title>
+  <style>
+    body {
+      font-family: 'PingFang SC', 'Microsoft YaHei', Arial, sans-serif;
+      background-color: #f4f7f6;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+    .instruction-box {
+      background: #eef7fe;
+      border-left: 5px solid #3498db;
+      padding: 15px;
+      margin-bottom: 25px;
+      border-radius: 4px;
+    }
+    .step-card {
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+    .step-title {
+      font-weight: bold;
+      font-size: 1.15em;
+      color: #2980b9;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #3498db;
+      padding-bottom: 5px;
+    }
+    .form-group {
+      margin-bottom: 18px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: bold;
+      color: #444;
+    }
+    .sub-note {
+      font-size: 0.85em;
+      color: #7f8c8d;
+      font-weight: normal;
+    }
+    input[type="text"], select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-sizing: border-box;
+      font-size: 14px;
+    }
+    .example-input {
+      display: block;
+      width: 100%;
+      margin-top: 8px;
+    }
+    .sentence-prompt {
+      display: grid;
+      gap: 4px;
+      line-height: 1.5;
+      margin-bottom: 10px;
+    }
+    .sentence-translation {
+      color: #667085;
+      font-size: 0.92em;
+    }
+    .family-count-input {
+      display: block;
+      width: 180px !important;
+      max-width: 100%;
+      margin-top: 8px;
+    }
+    .options-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 5px;
+    }
+    .btn-option {
+      padding: 8px 14px;
+      border: 1px solid #3498db;
+      background: #fff;
+      color: #3498db;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .btn-option.selected {
+      background: #3498db;
+      color: #fff;
+    }
+    .generate-btn {
+      display: block;
+      width: 100%;
+      padding: 15px;
+      background: #2ecc71;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.2em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .generate-btn:hover {
+      background: #27ae60;
+    }
+    .output-card {
+      margin-top: 30px;
+      background: #fff8e7;
+      border: 2px dashed #f39c12;
+      border-radius: 8px;
+      padding: 25px;
+      display: none;
+    }
+    .letter-content {
+      font-size: 1.1em;
+      line-height: 1.8;
+      white-space: pre-line;
+      color: #2c3e50;
+    }
+    .copy-btn {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background: #f39c12;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .copy-btn:hover {
+      background: #d35400;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>✉️ Term 1 CSA Writing Preparation</h1>
+  
+  <div class="instruction-box">
+    <strong>Writing practice:</strong> Please write a letter to your pen pal called 小花, introducing yourself and your family to her.<br>
+    <em>写作练习：请给你的笔友小花写一封信，向她介绍你自己和你的家人。</em>
+  </div>
+
+  <!-- Step 1: Basic Info -->
+  <div class="step-card">
+    <div class="step-title">Step 1: Fill in your basic information in Chinese (填写基本信息)</div>
+    
+    <div class="form-group">
+      <label>姓名 Name:</label>
+      <input type="text" id="name" placeholder="例如：明明 / e.g. Mingming">
+    </div>
+
+    <div class="form-group">
+      <label>年龄 Age & 年级 Grade:</label>
+      <input type="text" id="age" placeholder="例如：十二 / e.g. twelve" style="width: 48%; display: inline-block;">
+      <input type="text" id="grade" placeholder="例如：七 / e.g. seven" style="width: 48%; display: inline-block; float: right;">
+    </div>
+
+    <div class="form-group">
+      <label>生日 Birthday:</label>
+      <input type="text" id="birthday" placeholder="例如：十月二十五号 / e.g. October 25">
+    </div>
+
+    <div class="form-group">
+      <label>国籍 Nationality <span class="sub-note">*Use ‘一半一半’ (half...half..) to describe mixed-race</span>:</label>
+      <input type="text" id="nationality" placeholder="例如：中国（China）/ 一半美国，一半中国（half American, half Chinese）">
+    </div>
+
+    <div class="form-group">
+      <label>出生地 Birthplace (where you are born):</label>
+      我在 <input type="text" id="born" placeholder="例如：中国 / e.g. China" style="width: 60%; display: inline-block;"> 出生 (I was born in...)
+    </div>
+
+    <div class="form-group">
+      <label>成长地 Growth place (where you grow up):</label>
+      我在 <input type="text" id="raised" placeholder="例如：中国 / e.g. China" style="width: 60%; display: inline-block;"> 长大 (I grew up in...)
+    </div>
+  </div>
+
+  <!-- Step 2: Describe Yourself -->
+  <div class="step-card">
+    <div class="step-title">Step 2: Highlight the features to describe yourself (描述自己的外貌)</div>
+
+    <div class="form-group">
+      <label>身高 Height:</label>
+      <div class="options-group" data-target="self_height">
+        <button class="btn-option" onclick="selectOption(this, 'self_height')">高高的 tall</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_height')">矮矮的 short</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_height')">不高也不矮 neither tall nor short</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>体重 Weight:</label>
+      <div class="options-group" data-target="self_weight">
+        <button class="btn-option" onclick="selectOption(this, 'self_weight')">胖胖的 fat</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_weight')">瘦瘦的 thin</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_weight')">不胖不瘦 neither fat nor thin</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>👃 鼻子 Nose:</label>
+      <div class="options-group" data-target="self_nose">
+        <button class="btn-option" onclick="selectOption(this, 'self_nose')">大鼻子 big nose</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_nose')">小鼻子 small nose</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_nose')">鼻子不大不小 neither big nor small nose</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>👀 眼睛 Eyes:</label>
+      <div class="options-group" data-target="self_eyes">
+        <button class="btn-option" onclick="selectOption(this, 'self_eyes')">大眼睛 big eyes</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_eyes')">小眼睛 small eyes</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_eyes')">眼睛不大不小 neither big nor small eyes</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>👄 嘴巴 Mouth:</label>
+      <div class="options-group" data-target="self_mouth">
+        <button class="btn-option" onclick="selectOption(this, 'self_mouth')">大嘴巴 big mouth</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_mouth')">小嘴巴 small mouth</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_mouth')">嘴巴不大不小 neither big nor small mouth</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>👂 耳朵 Ear:</label>
+      <div class="options-group" data-target="self_ear">
+        <button class="btn-option" onclick="selectOption(this, 'self_ear')">大耳朵 big ear</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_ear')">小耳朵 small ear</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_ear')">耳朵不大不小 neither big nor small ear</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>💇 头发 Hair:</label>
+      <div class="options-group" data-target="self_hair">
+        <button class="btn-option" onclick="selectOption(this, 'self_hair')">长头发 long hair</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_hair')">短头发 short hair</button>
+        <button class="btn-option" onclick="selectOption(this, 'self_hair')">头发不长不短 neither long nor short hair</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: Introduce Family Tree -->
+  <div class="step-card">
+    <div class="step-title">Step 3: Introduce your family tree (介绍家庭概况)</div>
+    
+    <div class="form-group">
+      <label>人数 Family size:</label>
+      <div class="sentence-prompt">
+        <span>我家有 ___ 口人。</span>
+        <span class="sentence-translation">There are ___ people in my family.</span>
+      </div>
+      <input type="text" id="familyCount" class="family-count-input" placeholder="例如：四 / e.g. four">
+    </div>
+
+    <div class="form-group">
+      <label>成员 Family members:</label>
+      <div class="sentence-prompt">
+        <span>我家里有 ___ 和我。</span>
+        <span class="sentence-translation">My family includes ___ and me.</span>
+      </div>
+      <input type="text" id="familyMembers" class="example-input" placeholder="例如：爸爸、妈妈、一个哥哥 / father, mother, one older brother">
+    </div>
+  </div>
+
+  <!-- Step 4: Describe a Family Member -->
+  <div class="step-card">
+    <div class="step-title">Step 4: Introduce your family member (介绍其中一位家人)</div>
+    
+    <div class="form-group">
+      <label>家人 Family member (Choose one):</label>
+      <div class="sentence-prompt">
+        <span>我想介绍我的 ___。</span>
+        <span class="sentence-translation">I want to introduce my ___.</span>
+      </div>
+      <input type="text" id="targetMember" class="example-input" placeholder="例如：哥哥（older brother）/ 妈妈（mother）/ 爷爷（grandfather）">
+    </div>
+
+    <div class="form-group">
+      <label for="memberPronoun">称呼 Pronoun:</label>
+      <select id="memberPronoun" class="example-input">
+        <option value="他">他 / He</option>
+        <option value="她">她 / She</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>国籍 Nationality:</label>
+      <div class="sentence-prompt">
+        <span>他/她是 ___ 人。</span>
+        <span class="sentence-translation">He/She is from ___.</span>
+      </div>
+      <input type="text" id="memberNationality" class="example-input" placeholder="例如：中国 / e.g. China">
+    </div>
+
+    <div class="form-group">
+      <label>居住地 Residence:</label>
+      <div class="sentence-prompt">
+        <span>他/她住在 ___。</span>
+        <span class="sentence-translation">He/She lives in ___.</span>
+      </div>
+      <input type="text" id="memberResidence" class="example-input" placeholder="例如：香港（Hong Kong）/ 美国（the United States）">
+    </div>
+
+    <label style="margin-top: 15px; color: #2980b9;">Highlight the features to describe him/her (选择他/她的外貌特征):</label>
+    
+    <div class="form-group">
+      <label>身高 Height:</label>
+      <div class="options-group" data-target="m_height">
+        <button class="btn-option" onclick="selectOption(this, 'm_height')">高高的 tall</button>
+        <button class="btn-option" onclick="selectOption(this, 'm_height')">矮矮的 short</button>
+        <button class="btn-option" onclick="selectOption(this, 'm_height')">不高也不矮 neither tall nor short</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>体重 Weight:</label>
+      <div class="options-group" data-target="m_weight">
+        <button class="btn-option" onclick="selectOption(this, 'm_weight')">胖胖的 fat</button>
+        <button class="btn-option" onclick="selectOption(this, 'm_weight')">瘦瘦的 thin</button>
+        <button class="btn-option" onclick="selectOption(this, 'm_weight')">不胖不瘦 neither fat nor thin</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>👀 眼睛 Eyes:</label>
+      <div class="options-group" data-target="m_eyes">
+        <button class="btn-option" onclick="selectOption(this, 'm_eyes')">大眼睛 big eyes</button>
+        <button class="btn-option" onclick="selectOption(this, 'm_eyes')">小眼睛 small eyes</button>
+        <button class="btn-option" onclick="selectOption(this, 'm_eyes')">眼睛不大不小 neither big nor small eyes</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>💇 头发 Hair:</label>
+      <div class="options-group" data-target="m_hair">
+        <button class="btn-option" onclick="selectOption(this, 'm_hair')">长头发 long hair</button>
+        <button class="btn-option" onclick="selectOption(this, 'm_hair')">短头发 short hair</button>
+        <button class="btn-option" onclick="selectOption(this, 'm_hair')">头发不长不短 neither long nor short hair</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate Button -->
+  <button class="generate-btn" onclick="generateLetter()">Step 5: Draft your letter (生成我的中文信件)</button>
+
+  <!-- Output Area -->
+  <div class="output-card" id="outputCard">
+    <div class="step-title" style="color: #d35400;">✉️ 生成的信件 (Generated Letter)</div>
+    <div class="letter-content" id="letterContent"></div>
+    <button class="copy-btn" onclick="copyText()">📋 复制信件文本 (Copy Letter Text)</button>
+  </div>
+</div>
+
+<script>
+  const selectionData = {};
+
+  function selectOption(btn, category) {
+    const parent = btn.parentElement;
+    const buttons = parent.querySelectorAll('.btn-option');
+    buttons.forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    
+    // 只保留中文部分写入信件
+    const chineseText = btn.innerText.split(' ')[0];
+    selectionData[category] = chineseText;
+  }
+
+  function generateLetter() {
+    const name = document.getElementById('name').value || '明明';
+    const age = document.getElementById('age').value || '十二';
+    const grade = document.getElementById('grade').value || '七';
+    const birthday = document.getElementById('birthday').value || '10月25号';
+    const nationality = document.getElementById('nationality').value || '中国';
+    const born = document.getElementById('born').value || '中国';
+    const raised = document.getElementById('raised').value || '中国';
+
+    const s_height = selectionData['self_height'] || '不高也不矮';
+    const s_weight = selectionData['self_weight'] || '不胖不瘦';
+    const s_nose = selectionData['self_nose'] || '鼻子不大不小';
+    const s_eyes = selectionData['self_eyes'] || '大眼睛';
+    const s_mouth = selectionData['self_mouth'] || '嘴巴不大不小';
+    const s_ear = selectionData['self_ear'] || '大耳朵';
+    const s_hair = selectionData['self_hair'] || '短头发';
+
+    const familyCount = document.getElementById('familyCount').value || '四';
+    const familyMembers = document.getElementById('familyMembers').value || '爸爸、妈妈、一个哥哥';
+
+    const targetMember = document.getElementById('targetMember').value || '哥哥';
+    const memberPronoun = document.getElementById('memberPronoun').value;
+    const m_nationality = document.getElementById('memberNationality').value || '中国';
+    const m_residence = document.getElementById('memberResidence').value || '香港';
+
+    const m_height = selectionData['m_height'] || '高高的';
+    const m_weight = selectionData['m_weight'] || '不胖不瘦';
+    const m_eyes = selectionData['m_eyes'] || '大眼睛';
+    const m_hair = selectionData['m_hair'] || '短头发';
+
+    const letterText = `小花：
+
+你好！
+
+我叫${name}。我今年${age}岁，上${grade}年级。我的生日是${birthday}。我是${nationality}人。我在${born}出生，但是在${raised}长大。
+
+我长得${s_height}、${s_weight}。我有${s_eyes}、${s_nose}、${s_mouth}和${s_ear}，留着${s_hair}。
+
+我家有${familyCount}口人，我家里有${familyMembers}和我。
+
+我想介绍我的${targetMember}。${memberPronoun}是${m_nationality}人，现在住在${m_residence}。${memberPronoun}长得${m_height}、${m_weight}，有${m_eyes}和${m_hair}。
+
+祝好！
+
+${name}`;
+
+    document.getElementById('letterContent').innerText = letterText;
+    document.getElementById('outputCard').style.display = 'block';
+    document.getElementById('outputCard').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  function copyText() {
+    const text = document.getElementById('letterContent').innerText;
+    navigator.clipboard.writeText(text).then(() => {
+      alert('信件已复制！可以直接粘贴提交。');
+    });
+  }
+</script>
+
+</body>
+</html>
